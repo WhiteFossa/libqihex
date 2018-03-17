@@ -28,6 +28,11 @@ class libqihexTests : public QObject
 
 		void justATest();
 
+		/**
+		 * @brief Tests 8 bit iHEX read.
+		 */
+		void Test8BitRead();
+
 	private:
 		/**
 		 * @brief Pointer to library instance.
@@ -52,6 +57,11 @@ void libqihexTests::cleanupTestCase()
 void libqihexTests::justATest()
 {
 	QVERIFY2(_lib->Test(10, 20) == 30, "Failure");
+}
+
+void libqihexTests::Test8BitRead()
+{
+
 }
 
 QTEST_APPLESS_MAIN(libqihexTests)
