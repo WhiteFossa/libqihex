@@ -1,15 +1,18 @@
 #-------------------------------------------------
 #
-# Project created by QtCreator 2018-03-17T16:26:46
+# Project created by QtCreator 2018-03-17T16:42:13
 #
 #-------------------------------------------------
 
+QT       += testlib
+
 QT       -= gui
 
-TARGET = qihex
-TEMPLATE = lib
+TARGET = libqihexTests
+CONFIG   += console
+CONFIG   -= app_bundle
 
-DEFINES += QIHEX_LIBRARY
+TEMPLATE = app
 
 # The following define makes your compiler emit warnings if you use
 # any feature of Qt which has been marked as deprecated (the exact warnings
@@ -22,14 +25,12 @@ DEFINES += QT_DEPRECATED_WARNINGS
 # You can also select to disable deprecated APIs only up to a certain version of Qt.
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
+
 SOURCES += \
-    QiHex.cpp
+				libqihexTests.cpp
 
-HEADERS += \
-        qihex_global.hpp \ 
-    QiHex.hpp
+DEFINES += SRCDIR=\\\"$$PWD/\\\"
 
-unix {
-    target.path = /usr/lib
-    INSTALLS += target
-}
+LIBS += -lqihex
+
+INCLUDEPATH += ../../library/qihex
