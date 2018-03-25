@@ -33,7 +33,8 @@ HEADERS += \
 		Interfaces/IiHexReader.hpp \
 		Interfaces/IiHexReadonlyDataset.hpp \
 		Interfaces/IiHexDataBlock.hpp \
-    Implementations/iHexReader.hpp
+    Implementations/iHexReader.hpp \
+    QiHexTypes.hpp
 
 unix {
 		target.path = /usr/lib

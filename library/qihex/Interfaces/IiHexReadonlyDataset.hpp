@@ -4,8 +4,8 @@
 #include <QVector>
 
 #include "qihex_global.hpp"
-#include "QiHex.hpp"
 #include "IiHexDataBlock.hpp"
+#include "QiHexTypes.hpp"
 
 namespace Fossa
 {
@@ -20,9 +20,9 @@ namespace Fossa
 			{
 				public:
 					/**
-					 * @brief File contains records, pointing to this mode. Mode detection based on analysis what records appeared in file.
+					 * @brief File contains records, stored in this mode. Mode detection based on analysis what records appeared in file.
 					 */
-					FileMode Mode;
+					Fossa::QiHex::iHexAddressingMode Mode;
 
 					/**
 					 * @brief Data blocks, read from file.

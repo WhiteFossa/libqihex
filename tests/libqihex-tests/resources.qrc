@@ -1,0 +1,5 @@
+<RCC>
+    <qresource prefix="/fossa/libqihex-tests">
+        <file>resources/8bit_sequential.hex</file>
+    </qresource>
+</RCC>

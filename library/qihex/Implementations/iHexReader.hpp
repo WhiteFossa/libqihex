@@ -2,17 +2,25 @@
 #define IHEXREADER_HPP
 
 #include <QtCore/qglobal.h>
+#include <QFile>
+#include <QException>
+#include <QDebug>
+#include <QTextStream>
+#include <QString>
 
 #include "../Interfaces/IiHexReader.hpp"
+
 
 namespace Fossa
 {
 	namespace	QiHex
 	{
-		class iHexReader : Interfaces::IiHexReader
+		class QIHEXSHARED_EXPORT iHexReader : public Interfaces::IiHexReader
 		{
 			public:
-				QVector<Interfaces::IiHexReadonlyDataset> ReadFile(QString file) = 0;
+				virtual QVector<Interfaces::IiHexReadonlyDataset> ReadFile(QString fileName);
+
+				virtual ~iHexReader();
 		};
 	}
 }

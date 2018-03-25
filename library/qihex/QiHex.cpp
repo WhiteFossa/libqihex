@@ -1,11 +1,13 @@
 ﻿#include "QiHex.hpp"
+#include "Implementations/iHexReader.hpp"
 
 
 Fossa::QiHex::QiHex::QiHex()
 {
 }
 
-int Fossa::QiHex::QiHex::Test(int a, int b)
+Fossa::QiHex::Interfaces::IiHexReader* Fossa::QiHex::QiHex::GetReader()
 {
-	return a + b;
+	//return nullptr;
+	return new Fossa::QiHex::iHexReader();
 }

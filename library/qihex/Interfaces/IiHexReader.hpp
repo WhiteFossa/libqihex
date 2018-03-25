@@ -21,7 +21,15 @@ namespace	Fossa
 					 * @param file File to read.
 					 * @return Dataset with data from file.
 					 */
-					virtual QVector<IiHexReadonlyDataset> ReadFile(QString file) = 0;
+					virtual QVector<Fossa::QiHex::Interfaces::IiHexReadonlyDataset> ReadFile(QString fileName) = 0;
+
+					/**
+					 * @brief Destructor.
+					 */
+					virtual ~IiHexReader()
+					{
+						// Do nothing, it's interface.
+					}
 			};
 		}
 	}

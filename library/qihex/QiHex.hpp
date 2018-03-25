@@ -2,34 +2,25 @@
 #define QIHEX_HPP
 
 #include "qihex_global.hpp"
+#include "Interfaces/IiHexReader.hpp"
 
 namespace	Fossa
 {
 	namespace QiHex
 	{
 		/**
-		 * @brief Possible modes for Intel HEX. Mode defines allowed records set.
-		 */
-		enum FileMode
-		{
-			Mode8bit,
-			Mode16bit,
-			Mode32bit,
-		};
-
-		/**
 		 * @brief Main class for QiHex library.
 		 */
 		class QIHEXSHARED_EXPORT QiHex
 		{
 			public:
-
 				QiHex();
 
 				/**
-				 * @brief Just for test
+				 * @brief Call this method to get iHex reader instance.
+				 * @return iHex reader instance.
 				 */
-				int Test(int a, int b);
+				Fossa::QiHex::Interfaces::IiHexReader* GetReader();
 		};
 	}
 }

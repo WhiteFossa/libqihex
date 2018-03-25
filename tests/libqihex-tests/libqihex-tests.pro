@@ -34,3 +34,9 @@ DEFINES += SRCDIR=\\\"$$PWD/\\\"
 LIBS += -lqihex
 
 INCLUDEPATH += ../../library/qihex
+
+RESOURCES += \
+    resources.qrc
+
+DISTFILES += \
+    resources/8bit_sequential.hex

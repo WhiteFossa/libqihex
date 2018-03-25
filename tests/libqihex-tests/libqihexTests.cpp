@@ -26,8 +26,6 @@ class libqihexTests : public QObject
 		 */
 		void cleanupTestCase();
 
-		void justATest();
-
 		/**
 		 * @brief Tests 8 bit iHEX read.
 		 */
@@ -54,14 +52,16 @@ void libqihexTests::cleanupTestCase()
 	delete _lib;
 }
 
-void libqihexTests::justATest()
-{
-	QVERIFY2(_lib->Test(10, 20) == 30, "Failure");
-}
-
 void libqihexTests::Test8BitRead()
 {
+	Fossa::QiHex::Interfaces::IiHexReader* reader = _lib->GetReader();
 
+	QVector<Fossa::QiHex::Interfaces::IiHexReadonlyDataset> resultDatasets = reader->ReadFile(":/fossa/libqihex-tests/resources/8bit_sequential.hex");
+
+	// One data block
+	QVERIFY2(resultDatasets.count() == 1, "Wrong datablocks count.");
+
+	delete reader;
 }
 
 QTEST_APPLESS_MAIN(libqihexTests)
