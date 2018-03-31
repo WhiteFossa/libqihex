@@ -24,7 +24,9 @@ DEFINES += QT_DEPRECATED_WARNINGS
 
 SOURCES += \
 		QiHex.cpp \
-    Implementations/iHexReader.cpp
+    Implementations/iHexReader.cpp \
+    Implementations/iHexRecord.cpp \
+    Implementations/HexToStringCodec.cpp
 
 HEADERS += \
 				qihex_global.hpp \
@@ -34,7 +36,12 @@ HEADERS += \
 		Interfaces/IiHexReadonlyDataset.hpp \
 		Interfaces/IiHexDataBlock.hpp \
     Implementations/iHexReader.hpp \
-    QiHexTypes.hpp
+    QiHexTypes.hpp \
+    Interfaces/IiHexRecord.hpp \
+    Implementations/iHexRecord.hpp \
+    Auxilliary.hpp \
+    Interfaces/IHexToStringCodec.hpp \
+    Implementations/HexToStringCodec.hpp
 
 unix {
 		target.path = /usr/lib

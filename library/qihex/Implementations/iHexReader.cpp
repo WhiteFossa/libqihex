@@ -21,7 +21,9 @@ namespace Fossa
 			{
 				QString readedString = fileStream.readLine();
 
-				qWarning() << readedString;
+				Interfaces::IiHexRecord* record = new iHexRecord(readedString);
+
+				SafeDelete(record);
 			}
 
 			file.close();

@@ -9,6 +9,9 @@
 #include <QString>
 
 #include "../Interfaces/IiHexReader.hpp"
+#include "../Interfaces/IiHexRecord.hpp"
+#include "iHexRecord.hpp"
+#include "Auxilliary.hpp"
 
 
 namespace Fossa
