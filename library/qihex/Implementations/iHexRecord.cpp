@@ -43,28 +43,155 @@ namespace Fossa
 			}
 
 			// Checking checksum
-
 			if (!_checksumCheckerGenerator->Check(lineData))
 			{
 				qCritical() << QObject::tr("Checksum error.");
 
 				throw new QException();
 			}
+
+			// Reading RECLEN (see format description)
+			uint reclen = lineData[ReclenOffset];
+
+			if (reclen + ReclenShift != (uint)lineData.size())
+			{
+				qCritical() << QObject::tr("Incorrect record length. Got %1, expected %2").arg(reclen).arg(lineData.size() - ReclenShift);
+
+				throw new QException();
+			}
+
+			// Reading offset
+			_offset = lineData[OffsetOffset] * 0x100 + lineData[OffsetOffset + 1];
+
+			// Detecting record type
+			uint8_t rectype = lineData[RectypeOffset];
+
+			switch (rectype)
+			{
+				// Data
+				case Interfaces::iHexRecordType::Data:
+					_recordType = Interfaces::iHexRecordType::Data;
+				break;
+
+				// End of file
+				case Interfaces::iHexRecordType::EndOfFile:
+					_recordType = Interfaces::iHexRecordType::EndOfFile;
+
+					if (_offset != ZeroOffset)
+					{
+						qCritical() << QObject::tr("Incorrect OFFSET for End of File record. Expected %1, got %2").arg(ZeroOffset).arg(_offset);
+
+						throw new QException();
+					}
+
+					if (reclen != EndOfFileRecordReclen)
+					{
+						qCritical() << QObject::tr("Incorrect RECLEN for End of File record. Expected %1, got %2").arg(EndOfFileRecordReclen).arg(reclen);
+
+						throw new QException();
+					}
+				break;
+
+				// Extended segment address
+				case Interfaces::iHexRecordType::ExtendedSegmentAddress:
+					_recordType = Interfaces::iHexRecordType::ExtendedSegmentAddress;
+
+					if (_offset != ZeroOffset)
+					{
+						qCritical() << QObject::tr("Incorrect OFFSET for Extended Segment Address record. Expected %1, got %2").arg(ZeroOffset).arg(_offset);
+
+						throw new QException();
+					}
+
+					if (reclen != ExtendedSegmentAddressRecordReclen)
+					{
+						qCritical() << QObject::tr("Incorrect RECLEN for Extended Segment Address record. Expected %1, got %2").arg(ExtendedSegmentAddressRecordReclen).arg(reclen);
+
+						throw new QException();
+					}
+				break;
+
+				// Start segment address
+				case Interfaces::iHexRecordType::StartSegmentAddress:
+					_recordType = Interfaces::iHexRecordType::StartSegmentAddress;
+
+					if (_offset != ZeroOffset)
+					{
+						qCritical() << QObject::tr("Incorrect OFFSET for Start Segment Address record. Expected %1, got %2").arg(ZeroOffset).arg(_offset);
+
+						throw new QException();
+					}
+
+					if (reclen != StartSegmentAddressRecordReclen)
+					{
+						qCritical() << QObject::tr("Incorrect RECLEN for Start Segment Address record. Expected %1, got %2").arg(StartSegmentAddressRecordReclen).arg(reclen);
+
+						throw new QException();
+					}
+				break;
+
+				// Extended linear address
+				case Interfaces::iHexRecordType::ExtendedLinearAddress:
+					_recordType = Interfaces::iHexRecordType::ExtendedLinearAddress;
+
+					if (_offset != ZeroOffset)
+					{
+						qCritical() << QObject::tr("Incorrect OFFSET for Extended Linear Address record. Expected %1, got %2").arg(ZeroOffset).arg(_offset);
+
+						throw new QException();
+					}
+
+					if (reclen != ExtendedLinearAddressRecordReclen)
+					{
+						qCritical() << QObject::tr("Incorrect RECLEN for Extended Linear Address record record. Expected %1, got %2").arg(ExtendedLinearAddressRecordReclen).arg(reclen);
+
+						throw new QException();
+					}
+				break;
+
+				// Start linear address
+				case Interfaces::iHexRecordType::StartLinearAddress:
+					_recordType = Interfaces::iHexRecordType::StartLinearAddress;
+
+					if (_offset != ZeroOffset)
+					{
+						qCritical() << QObject::tr("Incorrect OFFSET for Start Linear Address record. Expected %1, got %2").arg(ZeroOffset).arg(_offset);
+
+						throw new QException();
+					}
+
+					if (reclen != StartLinearAddressRecordReclen)
+					{
+						qCritical() << QObject::tr("Incorrect RECLEN for Start Linear Address record record. Expected %1, got %2").arg(StartLinearAddressRecordReclen).arg(reclen);
+
+						throw new QException();
+					}
+				break;
+
+				default:
+					qCritical() << QObject::tr("Incorrect record type code: %1").arg(rectype);
+
+					throw new QException();
+				break;
+			}
+
+			// Getting payload
+			_payload = lineData.mid(PayloadOffset, lineData.length() - ReclenShift);
 		}
 
 		Interfaces::iHexRecordType iHexRecord::GetRecordType()
 		{
-			return Interfaces::iHexRecordType::Data;
+			return _recordType;
 		}
 
 		uint16_t iHexRecord::GetOffset()
 		{
-			return 0;
+			return _offset;
 		}
 
 		QVector<uint8_t> iHexRecord::GetPayload()
 		{
-			return QVector<uint8_t>();
+			return _payload;
 		}
 
 		void iHexRecord::SignalizeLineIsNotParseable(QString data)
