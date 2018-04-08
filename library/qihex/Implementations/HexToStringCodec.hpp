@@ -20,7 +20,7 @@ namespace Fossa
 				QString Code(uint8_t data);
 				uint8_t Decode(QString data);
 
-				~HexToStringCodec();
+				virtual ~HexToStringCodec();
 
 			private:
 

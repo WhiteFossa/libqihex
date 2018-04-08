@@ -7,6 +7,8 @@
 #include <QException>
 
 #include "../Interfaces/IiHexRecord.hpp"
+#include "../Interfaces/IHexToStringCodec.hpp"
+#include "../Interfaces/IChecksumCheckerGenerator.hpp"
 #include "Auxilliary.hpp"
 
 namespace Fossa
@@ -43,6 +45,13 @@ namespace Fossa
 				 * @param data Line contents.
 				 */
 				void SignalizeLineIsNotParseable(QString data);
+
+				/**
+				 * @brief String<->Hex codec
+				 */
+				Interfaces::IHexToStringCodec* _codec;
+
+				Interfaces::IChecksumCheckerGenerator* _checksumCheckerGenerator;
 		};
 	}
 }

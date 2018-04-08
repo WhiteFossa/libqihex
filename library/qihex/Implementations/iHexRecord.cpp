@@ -1,4 +1,6 @@
 ﻿#include "iHexRecord.hpp"
+#include "HexToStringCodec.hpp"
+#include "ChecksumCheckerGenerator.hpp"
 
 namespace Fossa
 {
@@ -7,6 +9,8 @@ namespace Fossa
 		iHexRecord::iHexRecord(QString data) : Interfaces::IiHexRecord(data)
 		{
 			_lineRegExp = new QRegExp(LineRegexp);
+			_codec = new HexToStringCodec();
+			_checksumCheckerGenerator = new ChecksumCheckerGenerator();
 
 			// We need to have odd characters number
 			if ((data.length() % 2) != 1)
@@ -23,7 +27,29 @@ namespace Fossa
 			// Removing ":" from begin
 			dataUpper = dataUpper.right(dataUpper.length() - 1);
 
-			qWarning() << dataUpper;
+			// Reading characters by pairs
+			QVector<uint8_t> lineData;
+			auto byteIterator = dataUpper.begin();
+
+			while (byteIterator != dataUpper.end())
+			{
+				QString pair;
+				pair.append(*byteIterator);
+				byteIterator ++;
+				pair.append(*byteIterator);
+				byteIterator ++;
+
+				lineData.append(_codec->Decode(pair));
+			}
+
+			// Checking checksum
+
+			if (!_checksumCheckerGenerator->Check(lineData))
+			{
+				qCritical() << QObject::tr("Checksum error.");
+
+				throw new QException();
+			}
 		}
 
 		Interfaces::iHexRecordType iHexRecord::GetRecordType()
@@ -50,6 +76,8 @@ namespace Fossa
 
 		iHexRecord::~iHexRecord()
 		{
+			SafeDelete(_checksumCheckerGenerator);
+			SafeDelete(_codec);
 			SafeDelete(_lineRegExp);
 		}
 	}

@@ -17,13 +17,27 @@ namespace Fossa
 			}
 
 			QTextStream fileStream(&file);
+
+			uint lineNumber = 0;
+			QString readLine;
 			while (!fileStream.atEnd())
 			{
-				QString readedString = fileStream.readLine();
+				readLine = fileStream.readLine();
 
-				Interfaces::IiHexRecord* record = new iHexRecord(readedString);
+				try
+				{
+					Interfaces::IiHexRecord* record = new iHexRecord(readLine);
 
-				SafeDelete(record);
+					SafeDelete(record);
+				}
+				catch (...)
+				{
+					qCritical() << QObject::tr("Error while processing line %1 : %2").arg(lineNumber).arg(readLine);
+
+					throw;
+				}
+
+				lineNumber ++;
 			}
 
 			file.close();

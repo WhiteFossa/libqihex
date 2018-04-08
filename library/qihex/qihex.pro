@@ -26,7 +26,8 @@ SOURCES += \
 		QiHex.cpp \
     Implementations/iHexReader.cpp \
     Implementations/iHexRecord.cpp \
-    Implementations/HexToStringCodec.cpp
+    Implementations/HexToStringCodec.cpp \
+    Implementations/ChecksumCheckerGenerator.cpp
 
 HEADERS += \
 				qihex_global.hpp \
@@ -41,7 +42,9 @@ HEADERS += \
     Implementations/iHexRecord.hpp \
     Auxilliary.hpp \
     Interfaces/IHexToStringCodec.hpp \
-    Implementations/HexToStringCodec.hpp
+    Implementations/HexToStringCodec.hpp \
+    Interfaces/IChecksumCheckerGenerator.hpp \
+    Implementations/ChecksumCheckerGenerator.hpp
 
 unix {
 		target.path = /usr/lib
