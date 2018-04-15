@@ -1,7 +1,6 @@
 ﻿#ifndef IIHEXREADER_HPP
 #define IIHEXREADER_HPP
 
-#include <QVector>
 #include <QString>
 
 #include "qihex_global.hpp"
@@ -19,9 +18,9 @@ namespace	Fossa
 					/**
 					 * @brief Call this method to read data from Intel HEX file.
 					 * @param file File to read.
-					 * @return Dataset with data from file.
+					 * @return Pointer to dataset with data from file.
 					 */
-					virtual QVector<Fossa::QiHex::Interfaces::IiHexReadonlyDataset> ReadFile(QString fileName) = 0;
+					virtual Fossa::QiHex::Interfaces::IiHexReadonlyDataset* ReadFile(QString fileName) = 0;
 
 					/**
 					 * @brief Destructor.

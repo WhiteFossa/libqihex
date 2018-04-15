@@ -1,10 +1,9 @@
 ﻿#ifndef IIHEXREADONLYDATASET_HPP
 #define IIHEXREADONLYDATASET_HPP
 
-#include <QVector>
+#include <QMap>
 
 #include "qihex_global.hpp"
-#include "IiHexDataBlock.hpp"
 #include "QiHexTypes.hpp"
 
 namespace Fossa
@@ -25,9 +24,9 @@ namespace Fossa
 					Fossa::QiHex::iHexAddressingMode Mode;
 
 					/**
-					 * @brief Data blocks, read from file.
+					 * @brief Data in dataset, key is address, value is data.
 					 */
-					QVector<IiHexDataBlock> DataBlocks;
+					QMap<uint32_t, uint8_t> Data;
 			};
 		}
 	}

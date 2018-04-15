@@ -4,11 +4,11 @@ namespace Fossa
 {
 	namespace QiHex
 	{
-		QVector<Interfaces::IiHexReadonlyDataset> Fossa::QiHex::iHexReader::ReadFile(QString fileName)
+		Interfaces::IiHexReadonlyDataset* Fossa::QiHex::iHexReader::ReadFile(QString fileName)
 		{
 			// Reset state
 			_baseAddress = 0;
-			_state = iHexReaderState::MODE8;
+			_state = iHexReaderState::Mode8;
 
 			// Reading file line by line
 			QFile file(fileName);
@@ -19,6 +19,8 @@ namespace Fossa
 
 				throw new QException();
 			}
+
+			Interfaces::IiHexReadonlyDataset* result = new Interfaces::IiHexReadonlyDataset();
 
 			QTextStream fileStream(&file);
 
@@ -32,7 +34,7 @@ namespace Fossa
 				{
 					Interfaces::IiHexRecord* record = new iHexRecord(readLine);
 
-					if (iHexReaderState::END == _state)
+					if (iHexReaderState::End == _state)
 					{
 						// New record after end
 						qCritical() << QObject::tr("Record after End of File record.");
@@ -45,7 +47,22 @@ namespace Fossa
 					// Maybe end of file?
 					if (Interfaces::iHexRecordType::EndOfFile == recordType)
 					{
-						_state = iHexReaderState::END;
+						_state = iHexReaderState::End;
+
+						// Saving mode into result
+						switch (_state)
+						{
+							case iHexReaderState::Mode8:
+								result->Mode = iHexAddressingMode::Mode8bit;
+							break;
+							case iHexReaderState::Mode16:
+								result->Mode = iHexAddressingMode::Mode16bit;
+							break;
+							case iHexReaderState::Mode32:
+								result->Mode = iHexAddressingMode::Mode32bit;
+							break;
+						}
+
 						SafeDelete(record);
 						continue;
 					}
@@ -53,19 +70,19 @@ namespace Fossa
 					// Switching modes
 					switch (_state)
 					{
-						case iHexReaderState::MODE8:
+						case iHexReaderState::Mode8:
 							if ((Interfaces::iHexRecordType::ExtendedSegmentAddress == recordType) || (Interfaces::iHexRecordType::StartSegmentAddress == recordType))
 							{
 								// 8 bit -> 16 bit
-								_state = iHexReaderState::MODE16;
+								_state = iHexReaderState::Mode16;
 							}
 							else if ((Interfaces::iHexRecordType::ExtendedLinearAddress == recordType) || (Interfaces::iHexRecordType::StartLinearAddress == recordType))
 							{
 								// 8bit -> 32 bit
-								_state = iHexReaderState::MODE32;
+								_state = iHexReaderState::Mode32;
 							}
 						break;
-						case iHexReaderState::MODE16:
+						case iHexReaderState::Mode16:
 							if ((Interfaces::iHexRecordType::ExtendedLinearAddress == recordType) || (Interfaces::iHexRecordType::StartLinearAddress == recordType))
 							{
 								// 16 bit -> 32 bit. NOT ALLOWED!
@@ -74,7 +91,7 @@ namespace Fossa
 								throw new QException();
 							}
 						break;
-						case iHexReaderState::MODE32:
+						case iHexReaderState::Mode32:
 							if ((Interfaces::iHexRecordType::ExtendedSegmentAddress == recordType) || (Interfaces::iHexRecordType::StartSegmentAddress == recordType))
 							{
 								// 32 bit -> 16 bit. NOT ALLOWED!
@@ -99,20 +116,20 @@ namespace Fossa
 							{
 								switch (_state)
 								{
-									case iHexReaderState::MODE8:
+									case iHexReaderState::Mode8:
 										effectiveAddress = index + recordOffset;
 									break;
 
-									case iHexReaderState::MODE16:
+									case iHexReaderState::Mode16:
 										effectiveAddress = _baseAddress + (uint16_t)(index + recordOffset);
 									break;
 
-									case iHexReaderState::MODE32:
+									case iHexReaderState::Mode32:
 										effectiveAddress = _baseAddress + index + recordOffset;
 									break;
 								}
 
-								qWarning() << QObject::tr("Addr: %1, Data: %2").arg(effectiveAddress).arg(recordPayload[index]);
+								result->Data.insert(effectiveAddress, recordPayload[index]);
 							}
 						break;
 
@@ -134,6 +151,7 @@ namespace Fossa
 					qCritical() << QObject::tr("Error while processing line %1 : %2").arg(lineNumber).arg(readLine);
 
 					file.close();
+					SafeDelete(result);
 					throw;
 				}
 
@@ -142,8 +160,7 @@ namespace Fossa
 
 			file.close();
 
-			// TODO: Implement it
-			return QVector<Interfaces::IiHexReadonlyDataset>();
+			return result;
 		}
 
 		Fossa::QiHex::iHexReader::~iHexReader()

@@ -39,4 +39,5 @@ RESOURCES += \
     resources.qrc
 
 DISTFILES += \
-    resources/8bit_sequential.hex
+    resources/8bit_sequential.hex \
+    resources/crc_error.hex

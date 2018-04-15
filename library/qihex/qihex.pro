@@ -35,7 +35,6 @@ HEADERS += \
 		qihex_global.hpp \
 		Interfaces/IiHexReader.hpp \
 		Interfaces/IiHexReadonlyDataset.hpp \
-		Interfaces/IiHexDataBlock.hpp \
     Implementations/iHexReader.hpp \
     QiHexTypes.hpp \
     Interfaces/IiHexRecord.hpp \

@@ -10,6 +10,7 @@
 
 #include "../Interfaces/IiHexReader.hpp"
 #include "../Interfaces/IiHexRecord.hpp"
+#include "../QiHexTypes.hpp"
 #include "iHexRecord.hpp"
 #include "Auxilliary.hpp"
 
@@ -23,10 +24,10 @@ namespace Fossa
 		 */
 		enum iHexReaderState
 		{
-			MODE8,
-			MODE16,
-			MODE32,
-			END
+			Mode8,
+			Mode16,
+			Mode32,
+			End
 		};
 
 		/**
@@ -35,7 +36,7 @@ namespace Fossa
 		class QIHEXSHARED_EXPORT iHexReader : public Interfaces::IiHexReader
 		{
 			public:
-				virtual QVector<Interfaces::IiHexReadonlyDataset> ReadFile(QString fileName);
+				virtual Interfaces::IiHexReadonlyDataset* ReadFile(QString fileName);
 
 				virtual ~iHexReader();
 
