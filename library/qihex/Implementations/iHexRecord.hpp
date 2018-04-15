@@ -63,7 +63,7 @@ namespace Fossa
 				/**
 				 * @brief Reclen value for End of File record.
 				 */
-				const uint EndOfFileRecordReclen = 5U;
+				const uint EndOfFileRecordReclen = 0U;
 
 				/**
 				 * @brief Reclen value for Extended Segment Address record.
