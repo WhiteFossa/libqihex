@@ -2,5 +2,12 @@
     <qresource prefix="/fossa/libqihex-tests">
         <file>resources/8bit_sequential.hex</file>
         <file>resources/crc_error.hex</file>
+        <file>resources/even_characters_error.hex</file>
+        <file>resources/no_colon_error.hex</file>
+        <file>resources/wrong_characters_error.hex</file>
+        <file>resources/wrong_reclen_error.hex</file>
+        <file>resources/wrong_rectype_error.hex</file>
+        <file>resources/eof_wrong_offset.hex</file>
     </qresource>
+    <qresource prefix="/"/>
 </RCC>

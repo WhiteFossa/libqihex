@@ -40,4 +40,10 @@ RESOURCES += \
 
 DISTFILES += \
     resources/8bit_sequential.hex \
-    resources/crc_error.hex
+    resources/crc_error.hex \
+    resources/even_characters_error.hex \
+    resources/no_colon_error.hex \
+    resources/wrong_characters_error.hex \
+    resources/wrong_reclen_error.hex \
+    resources/wrong_rectype_error.hex \
+    resources/eof_wrong_offset.hex

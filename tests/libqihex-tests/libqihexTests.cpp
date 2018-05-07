@@ -33,9 +33,38 @@ class libqihexTests : public QObject
 
 		/**
 		 * @brief Tests that CRC error can be detected.
-		 * @return
 		 */
 		void TestCRCError();
+
+		/**
+		 * @brief Tests that even characters line will be detected.
+		 */
+		void TestEvenCharactersCount();
+
+		/**
+		 * @brief Tests that line without starting colon will be detected.
+		 */
+		void TestStartingColon();
+
+		/**
+		 * @brief Tests that line with wrong characters will be detected.
+		 */
+		void TestWrongCharactersLine();
+
+		/**
+		 * @brief Tests that line with wrong record length will be detected.
+		 */
+		void TestWrongReclen();
+
+		/**
+		 * @brief Tests that line with wrong record type will be detected.
+		 */
+		void TestWrongRectype();
+
+		/**
+		 * @brief Tests that wrong offset in EoF record will be detected.
+		 */
+		void TestEOFWrongOffset();
 
 	private:
 		/**
@@ -122,6 +151,90 @@ void libqihexTests::TestCRCError()
 	}
 
 	delete reader;
+}
+
+void libqihexTests::TestEvenCharactersCount()
+{
+	Fossa::QiHex::Interfaces::IiHexReader* reader = _lib->GetReader();
+
+	try
+	{
+		reader->ReadFile(":/fossa/libqihex-tests/resources/even_characters_error.hex");
+		QFAIL("Even characters line not detected.");
+	}
+	catch (...)
+	{
+	}
+}
+
+void libqihexTests::TestStartingColon()
+{
+	Fossa::QiHex::Interfaces::IiHexReader* reader = _lib->GetReader();
+
+	try
+	{
+		reader->ReadFile(":/fossa/libqihex-tests/resources/no_colon_error.hex");
+		QFAIL("Line without colon not detected.");
+	}
+	catch (...)
+	{
+	}
+}
+
+void libqihexTests::TestWrongCharactersLine()
+{
+	Fossa::QiHex::Interfaces::IiHexReader* reader = _lib->GetReader();
+
+	try
+	{
+		reader->ReadFile(":/fossa/libqihex-tests/resources/wrong_characters_error.hex");
+		QFAIL("Line with wrong characters not detected.");
+	}
+	catch (...)
+	{
+	}
+}
+
+void libqihexTests::TestWrongReclen()
+{
+	Fossa::QiHex::Interfaces::IiHexReader* reader = _lib->GetReader();
+
+	try
+	{
+		reader->ReadFile(":/fossa/libqihex-tests/resources/wrong_reclen_error.hex");
+		QFAIL("Wrong record length not detected.");
+	}
+	catch (...)
+	{
+	}
+}
+
+void libqihexTests::TestWrongRectype()
+{
+	Fossa::QiHex::Interfaces::IiHexReader* reader = _lib->GetReader();
+
+	try
+	{
+		reader->ReadFile(":/fossa/libqihex-tests/resources/wrong_rectype_error.hex");
+		QFAIL("Wrong record type not detected.");
+	}
+	catch (...)
+	{
+	}
+}
+
+void libqihexTests::TestEOFWrongOffset()
+{
+Fossa::QiHex::Interfaces::IiHexReader* reader = _lib->GetReader();
+
+	try
+	{
+		reader->ReadFile(":/fossa/libqihex-tests/resources/eof_wrong_offset.hex");
+		QFAIL("Wrong offset for EoF record not detected.");
+	}
+	catch (...)
+	{
+	}
 }
 
 QTEST_APPLESS_MAIN(libqihexTests)
